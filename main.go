@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -23,12 +22,12 @@ func read_yaml(yaml_path *string) map[string]any {
 }
 
 func main() {
-	scanner := bufio.NewScanner(os.Stdin)
-	var yaml_path = ""
+	// scanner := bufio.NewScanner(os.Stdin)
+	yaml_path := os.Args[0]
 
-	if scanner.Scan() {
-		yaml_path = scanner.Text()
-	}
+	// if scanner.Scan() {
+	// 	yaml_path = scanner.Text()
+	// }
 
 	clean_path := path.Clean(yaml_path)
 	job_map := read_yaml(&clean_path)
