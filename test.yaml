@@ -1,6 +1,6 @@
+---
 jobs:
   - job1
   - job2
-
 job1:
   - echo "hello"
