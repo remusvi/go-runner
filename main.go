@@ -41,11 +41,13 @@ func main() {
 		//	fmt.Println("the jobs are ", job_map["jobs"])
 		for _, v := range job_map["jobs"].([]any) {
 			executable_job := Job{name: fmt.Sprint(v)}
-			for _, v := range job_map[executable_job.name].([]any) {
-				executable_job.instructions = append(executable_job.instructions, fmt.Sprint(v))
+			if job_map[executable_job.name] != nil {
+				for _, v := range job_map[executable_job.name].([]any) {
+					executable_job.instructions = append(executable_job.instructions, fmt.Sprint(v))
+					fmt.Println(executable_job)
+				}
 			}
-			fmt.Println(executable_job)
+			//fmt.Println(executable_job)
 		}
 	}
-
 }
