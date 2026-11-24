@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"path"
 	"runtime"
 
@@ -44,30 +43,39 @@ func job_builder(job_map map[string]any) []Job {
 	return job_arr
 }
 
-func handle_job(job *Job) bool {
-	for _, v := range job.instructions {
-		cmd := exec.Command("powershell", "-Command", v)
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			log.Fatalf("Command execution failed: %v\nOutput: %s", err, string(output))
-		}
-		fmt.Println(string(output))
-	}
-	return false
-}
+// func handle_job(job *Job) bool {
+// 	//fmt.Println("handling jobs")
+// 	for _, v := range job.instructions {
+// 		fmt.Printf("\033[32m %s \033[31m\n", v)
+// 		cmd := exec.Command("/bin/zsh", "-c", v) //why no work
+// 		output, err := cmd.CombinedOutput()
+// 		if err != nil {
+// 			log.Fatalf("Command execution failed: %v\nOutput: %s", err, string(output))
+// 		}
+// 		fmt.Println(string(output))
+// 	}
+// 	return false
+// }
 
 func main() {
 	yaml_path := os.Args[1]
 	clean_path := path.Clean(yaml_path)
 	job_map := read_yaml(&clean_path)
 	curr_os := runtime.GOOS
+	platform := PlatformNone
 
 	if job_map["jobs"] != nil {
 		job_arr := job_builder(job_map)
 		switch curr_os {
 		case "windows":
+			platform = Windows
 			for _, v := range job_arr {
-				handle_job(&v)
+				handle_job(&v, platform)
+			}
+		case "darwin":
+			platform = Darwin
+			for _, v := range job_arr {
+				handle_job(&v, platform)
 			}
 		}
 	} else {

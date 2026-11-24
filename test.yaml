@@ -2,11 +2,7 @@ jobs:
   - job1
   - job2
 job1:
-  - pwd
-  - mkdir test_folder
-  - cd test_folder
-  - NI test_folder/test.txt
-  - ls
+  - echo "hello world"
 
 job2:
   - echo "adafa is cool"
